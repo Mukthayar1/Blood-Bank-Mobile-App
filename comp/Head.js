@@ -15,7 +15,7 @@ export default function Head(props) {
   return (
     <>
       <Body >
-        <Title>Blood Bank</Title>
+        <Title>Saylani</Title>
         <Subtitle>{page_name}</Subtitle>
       </Body>
       <Right>

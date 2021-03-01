@@ -11,6 +11,9 @@ import Donars from "./Donars";
 import Logine from "./Login";
 import Save from "./Save";
 import Acc from "./Acc";
+import PostAdd from "./PostAdd";
+import Manager from "./Manger"
+import Add_User from "./Add_User"
 import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
 import database from '@react-native-firebase/database';
@@ -43,27 +46,22 @@ export default function NAV() {
       let UserToken;
       let useremail = Emailee;
       let usersPass = Passee;
-        
-
       var leadsRef = firebase.database().ref('user');
       leadsRef.on('value', function (Users) {
         Users.forEach(function (data) {
           var y = data.val();
-          if(useremail == y.Email && usersPass == y.Pass)
-          {
-           AsyncStorage.setItem('USERmine', y.uid);
-           UserToken = "hello";
-           AsyncStorage.setItem('UserToken', UserToken);
+          if (useremail == y.Email && usersPass == y.Pass) {
+            AsyncStorage.setItem('USERmine', y.uid);
+            UserToken = "hello";
+            AsyncStorage.setItem('UserToken', UserToken);
             alert("Login Sucessfully")
             dispatch({ type: 'LOGIN', id: useremail, token: UserToken })
           }
-          else{
-            alert("Try Again")
-          }
         });
       });
-      
+
     },
+
     OUT: async () => {
       try {
         await AsyncStorage.removeItem('USERTOKEN');
@@ -72,12 +70,11 @@ export default function NAV() {
         return true;
       } catch (e) {
         console.log(e)
-      }
-     
+      }},
+    SignUp: async () => {
 
-    
-    },
-    SignUp: async (a) => {
+      GoogleSignin.configure({ webClientId: '990181536626-q4hd7o17dmqotkmao8oiqsu2ol46rph4.apps.googleusercontent.com', });
+
       // Get the users ID token
       const { idToken } = await GoogleSignin.signIn();
 
@@ -86,23 +83,23 @@ export default function NAV() {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
 
-          a = {
+          let a = {
             NAME: user.displayName,
             Email: user.email,
             photoURL: user.photoURL,
             uid: user.uid,
-            Donar: "",
-            Blood_Group: "",
             Pass: "",
             Mobile: "",
-            Active_Profile: true,
+            Class : "",
+            UserType : "STUDENT"
           }
           try {
             let UserToken;
             UserToken = '323f43t653g';
             AsyncStorage.setItem('USERmine', user.uid)
+            AsyncStorage.setItem('UserToken', UserToken);
             database().ref(`/`).child(`user/${user.uid}`).set(a);
-            dispatch({ type: 'REGISTER', id: a, token: idToken })
+            dispatch({ type: 'REGISTER', id: a.NAME, token: UserToken })
 
           } catch (e) {
             console.log(e)
@@ -118,19 +115,16 @@ export default function NAV() {
   }), []);
 
   useEffect(() => {
-
-
-    GoogleSignin.configure({ webClientId: '990181536626-q4hd7o17dmqotkmao8oiqsu2ol46rph4.apps.googleusercontent.com', });
     setTimeout(async () => {
 
       let UserToken;
       UserToken = null;
       try {
         isSignedIn()
-        .then(res => {
-          if (res) { UserToken = res; }
-          dispatch({ type: 'REGISTER', token: UserToken })
-        })
+          .then(res => {
+            if (res) { UserToken = res; }
+            dispatch({ type: 'REGISTER', token: UserToken })
+          })
 
 
       } catch (e) {
@@ -138,7 +132,7 @@ export default function NAV() {
       }
     }, 2000)
 
-  }, [])
+  }, [a.UserToken])
 
   if (loginstate.Isloading === true) {
     return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -156,6 +150,10 @@ export default function NAV() {
               <Stack.Screen name="Account" component={Acc} options={{ headerShown: false }} />
               <Stack.Screen name="Save" component={Save} options={{ headerShown: false }} />
               <Stack.Screen name="Donars" component={Donars} options={{ headerShown: false }} />
+              <Stack.Screen name="PostAdd" component={PostAdd} options={{ headerShown: false }} />
+              <Stack.Screen name="Manager" component={Manager} options={{ headerShown: false }} />
+              <Stack.Screen name="Add_User" component={Add_User} options={{ headerShown: false }} />
+              
             </Stack.Navigator>
             :
             <Stack.Navigator>

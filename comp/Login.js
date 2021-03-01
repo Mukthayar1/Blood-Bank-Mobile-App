@@ -61,15 +61,13 @@ function Logine(props) {
   return (
     <>
 
-      <Container style={{ backgroundColor: 'pink', paddingTop: 20, alignItems: 'center' }} >
+      <Container style={{ backgroundColor: 'green', paddingTop: 20, alignItems: 'center' }} >
 
         <Content>
           
-          <Text style={[styles.bigBlue]}>Welcome To Blood Bank</Text>
+          <Text style={[styles.bigBlue]}>WELCOME TO SAYLANI </Text>
 
-          <Text style={[styles.bigBlue2]}>Save Life Be A Hero </Text>
-      
-          <Image source={require('../assets/heart.png')} style={{height:100,width:100,marginLeft:104}} />
+          <Text style={[styles.bigBlue2]}>STUDY  JOB  KNOWLEDGE </Text>
 
           <View style={[styles.loginbody]}>
          
@@ -81,7 +79,7 @@ function Logine(props) {
               </Item>
               <Item floatingLabel last>
                 <Label>Password</Label>
-                <Input  onChangeText={UserPassHandle}  keyboardType={'phone-pad'} maxLength={7} />
+                <Input  onChangeText={UserPassHandle}  keyboardType={'phone-pad'} maxLength={5} />
               </Item>
               <View style={{alignItems: 'center'}}>
               <Button rounded style={[styles.loginbtn]} onPress={()=>{IN(Emailee,Passee)}} >
@@ -97,11 +95,11 @@ function Logine(props) {
             style={[styles.btn]}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
-            onPress={(e)=>{SignUp()}}
+            onPress={()=>{SignUp()}}
              />
 
         </Content>
-        <Text style={[styles.end_text]}>One More Step To Save Life</Text>
+        <Text style={[styles.end_text]}>Sigin With Google For Making  Students Account </Text>
       </Container>
     </>
   )
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
   bigBlue2: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 16,
     textAlign: 'center'
   },
   btn: {
@@ -130,7 +128,6 @@ const styles = StyleSheet.create({
     , alignItems: 'center',
     marginTop: 100,
     height: 40,
-    backgroundColor:"pink"
   },
 
 
@@ -140,7 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   login: {
-    color: 'pink',
+    color: 'green',
     fontWeight: 'bold',
     fontSize: 25,
     textAlign: 'center',
@@ -153,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 30,
-    backgroundColor:"pink",
+    backgroundColor:"green",
     padding:30, 
     marginLeft:100,
 
@@ -161,7 +158,7 @@ const styles = StyleSheet.create({
   loginbody:{
     backgroundColor:'white',
     borderRadius:50,
-    marginTop:10,
+    marginTop:60,
     justifyContent: 'center',
     shadowColor: "#000",
     shadowOffset: {

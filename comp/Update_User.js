@@ -4,18 +4,12 @@ import { Content, Button, Text, Icon, Item, Input, Form, List, ListItem } from '
 import firebase from '@react-native-firebase/app';
 import RadioForm from 'react-native-simple-radio-button';
 import { Picker } from '@react-native-picker/picker';
+import TextInputMask from 'react-native-text-input-mask';
 export default function Update_User(props) {
   const [Phone, GetPhone] = React.useState();
-  const [Password, GetPassword] = React.useState();
-  const [blood, Getblood] = React.useState();
-  const [Donar, GetDonar] = React.useState(true);
-  const [state, Getstate] = React.useState({
-    language: ""
-  });
-  var radio_props = [
-    { label: 'DONATE BLOOD', value: true },
-    { label: 'LOOKING FOR DONARS', value: false }
-  ];
+  const [Password, GetPassword] = React.useState();;
+  const [Class, GetClass] = React.useState();
+
 
 
 
@@ -27,33 +21,24 @@ export default function Update_User(props) {
     GetPassword(text)
   }
 
-  const handleBlood = (text) => {
-    Getblood(text)
+  const handleClass = (text) => {
+    GetClass(text)
   }
   const update = () => {
-    let d = Donar.value
-    alert(d)
 
-    var str = Phone;
-    var n = str.length;
-    console.log(n)
-    if (n < 11 || Password.length < 5) {
-      alert("PLese Fill Correctly")
 
-    }
-    else {
       const ref = firebase.database().ref(`user`)
       ref.child(`${props.UserId}`).update({
-        "Donar": d,
+        
         "Pass": Password,
-        "Blood_Group": state.language,
         "Mobile": Phone,
+        "Class":Class
        
       })
 
     }
 
-  }
+  
 
   return (
     <>
@@ -61,50 +46,24 @@ export default function Update_User(props) {
         <Form>
           <Text style={st.heading}>Please Upgrade Profile To Continue..</Text>
           <Item success>
-            <Input placeholder='+923448346160' onChangeText={handlePhone} keyboardType={'phone-pad'} maxLength={11} />
-            {
-              Phone ? <Icon name='checkmark-circle' /> : <Icon name='close-circle' style={[st.danger]} />
-            }
+            <TextInputMask refInput={ref => { input = ref }} maxLength={13} Input placeholder='+923448346160' onChangeText={handlePhone} keyboardType={'phone-pad'}  mask={"+92[0000000000]"}/>
+
 
 
           </Item>
           <Item success>
-            <Input placeholder='Create New Password' secureTextEntry={true} keyboardType={'phone-pad'} onChangeText={handlePassword} maxLength={7} />
-            {
-              Password ? <Icon name='checkmark-circle' /> : <Icon name='close-circle' style={[st.danger]} />
-            }
+            <Input placeholder='Create New Password' secureTextEntry={true} keyboardType={'phone-pad'} onChangeText={handlePassword} maxLength={5} />
           </Item>
 
           <Item>
-            <Text>Select Blood Group</Text>
-            <Picker style={{ height: 50, width: 100 ,marginLeft:100}}
-            selectedValue={state.language}
-              onValueChange={(itemValue, itemIndex) =>
-                Getstate({ language: itemValue })
-              }>
-              <Picker.Item label="A-" value="A-" />
-              <Picker.Item label="A+" value="A+" />
-              <Picker.Item label="B+" value="B+" />
-              <Picker.Item label="B-" value="B-" />
-              <Picker.Item label="O+" value="O+" />
-              <Picker.Item label="O-" value="O-" />
-              <Picker.Item label="AB+" value="AB+" />
-              <Picker.Item label="AB-" value="AB-" />
-
-            </Picker>
+          <Input placeholder='Class'  keyboardType={'phone-pad'} onChangeText={handleClass} maxLength={2} />
           </Item>
-          <RadioForm
-             style={{marginLeft:10, padding:10}}
-              radio_props={radio_props}
-              initial={true}
-              animation={true}
-              onPress={(value) => { GetDonar({value}) }}
-            />
-
-
+          {Phone == null ?
+          null : Password == null ? null :
           <Button block onPress={update} style={st.btn}>
             <Text>UPDATE</Text>
           </Button>
+      }
           <List>
             <ListItem itemHeader first  style={{ margin: -10,}}>
               <Text>Terms and Conditions</Text>
@@ -140,14 +99,14 @@ const st = StyleSheet.create({
   },
   heading: {
     fontWeight: 'bold',
-    color: 'pink',
+    color: 'green',
     textAlign: 'center',
     fontSize: 18,
     marginBottom: 5,
   },
   btn: {
     color: 'black',
-    backgroundColor: 'pink',
+    backgroundColor: 'green',
     textAlign: 'center',
     alignItems: 'center',
     marginTop: 20,

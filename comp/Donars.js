@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, FlatList, Linking} from "react-native"
+import React , {useEffect} from 'react';
+import { View, FlatList, Linking , ActivityIndicator} from "react-native"
 import { Header, Content,Footer, FooterTab, Text,Card, CardItem, Thumbnail,Button, Icon, Left, Body, Right
 } from 'native-base';
 import Head from "./Head";
@@ -13,34 +13,51 @@ export default function Donars(props) {
   const [UserId, GetUserId] = React.useState();
   
   const [U, GU] = React.useState([])
-  isSignedIn()
-    .then(res => {
-      if (res) {
+  useEffect(() => {
+    isSignedIn()
+      .then(res => {
+        if (res) {
 
-        GetUserId(res)
-      }
-    })
-  
-
-
-  firebase.database().ref('user').on('value', (snapshot) => {
-    var li = []
-    snapshot.forEach((child) => {
-      li.push({
-        key: child.key,
-        NAME: child.val().NAME,
-        DONAR: child.val().Donar,
-        BGROUP: child.val().Blood_Group,
-        PHONE: child.val().Mobile,
-        IMAGE: child.val().photoURL,
-        EMAIL : child.val().Email
+          GetUserId(res)
+        }
       })
-    })
-    GU({ list: li })
-  })
+
+    setTimeout(async () => {
+      try {
+        firebase.database().ref('user').on('value', (snapshot) => {
+          var li = []
+          snapshot.forEach((child) => {
+            li.push({
+              key: child.key,
+              NAME: child.val().NAME,
+              Class: child.val().Class,
+              PHONE: child.val().Mobile,
+              IMAGE: child.val().photoURL,
+              EMAIL : child.val().Email
+            })
+          })
+          GU({ list: li })
+        })
+
+      } catch (e) {
+        console.log(e)
+      }
+    }, 1000)
+   
+  
+    },[UserId])
+  
+    if (UserId == null) {
+      return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator animating={true} size="large" style={{ opacity: 1 }} color="black" />
+      </View>)
+  
+    }
+
+
 
   
-handleEmail = (emails) => {
+const handleEmail = (emails) => {
   const to = [emails] // string or array of email addresses
   email(to, {
       // Optional additional arguments
@@ -68,7 +85,7 @@ Linking.canOpenURL(url).then(supported => {
     <>
 
 
-      <Header style={{ backgroundColor: 'pink' }}>
+      <Header style={{ backgroundColor: 'green' }}>
         <Head />
       </Header>
 
@@ -79,7 +96,7 @@ Linking.canOpenURL(url).then(supported => {
 
               return (
                 <View>
-                  {item.key === UserId ? null :
+                  {item.key === UserId  ? null :
                 <Card style={{ flex: 0 }}>
                   <CardItem>
                     <Left>
@@ -87,16 +104,16 @@ Linking.canOpenURL(url).then(supported => {
                       <Body>
                         <Text>{item.NAME}</Text>
                         <Text note>{item.PHONE}</Text>
-                        <Text style={{color:'pink',fontWeight:'bold'}}>{item.BGROUP}</Text>
+                        <Text style={{color:'green',fontWeight:'bold'}}> Class {item.Class}</Text>
                       </Body>
                     </Left>
                     <Right>
                     
                        <View >
-                <Button title="Send Mail" onPress={()=>handleEmail(item.EMAIL)} style={{backgroundColor: 'pink',width:60 ,margin:5 }}>
+                <Button title="Send Mail" onPress={()=>handleEmail(item.EMAIL)} style={{backgroundColor: 'green',width:60 ,margin:5 }}>
                 <Icon name="ios-mail"/>
                   </Button>
-                  <Button title="WhatsApp Call" onPress={()=>call(item.PHONE)} style={{backgroundColor: 'pink',width:60,margin:5 }}>
+                  <Button title="WhatsApp Call" onPress={()=>call(item.PHONE)} style={{backgroundColor: 'green',width:60,margin:5 }}>
                   <Icon name="ios-call"/>
                   
                   </Button>    
@@ -112,21 +129,7 @@ Linking.canOpenURL(url).then(supported => {
 
       <Content></Content>
 
-      <Footer>
-        <FooterTab style={{ backgroundColor: 'pink' }}>
-          <Button vertical onPress={() => props.navigation.navigate("Account")} >
-            <Text style={{ color: 'white', fontWeight: 'bold' }} >Account</Text>
-          </Button>
-          <Button vertical onPress={() => props.navigation.navigate("Donars")}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }} >Donars</Text>
-          </Button>
-          {/* <Button vertical onPress={() => props.navigation.navigate("Save")}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>Save</Text>
-          </Button> */}
-
-        </FooterTab>
-      </Footer>
-
+    
 
     </>
 

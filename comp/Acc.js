@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { ScrollView, View, ActivityIndicator} from "react-native";
-import * as Animatable from 'react-native-animatable';
+import { ScrollView, View, ActivityIndicator } from "react-native";
 import {
   Container, Header, Content, Button, ListItem, Text, Icon, Left, Body, Right, Footer,
   FooterTab, Card, CardItem, Thumbnail
@@ -14,7 +13,6 @@ export default function Acc(props) {
 
   const [CUser, GetCUser] = React.useState({})
   const [UserId, GetUserId] = React.useState();
-  const [Pass, ShowPass] = React.useState(false)
 
 
 
@@ -36,22 +34,24 @@ export default function Acc(props) {
       }
     }, 1000)
 
+    const ref = firebase.database().ref(`user/${UserId}`)
+
+    ref.on('value', (snapshot) => {
+      const user = snapshot.val()
+  
+      GetCUser(user)
+  
+  
+    }, (error) => {
+      console.log(error)
+    })
+  
+
 
   }, [UserId]);
 
 
-  const ref = firebase.database().ref(`user/${UserId}`)
-
-  ref.on('value', (snapshot) => {
-    const user = snapshot.val()
-
-    GetCUser(user)
-
-
-  }, (error) => {
-    console.log(error)
-  })
-
+ 
   if (CUser == null) {
     return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator animating={true} size="large" style={{ opacity: 1 }} color="black" />
@@ -63,7 +63,7 @@ export default function Acc(props) {
   return (
     <>
       <Container>
-        <Header style={{backgroundColor:'pink'}}>
+        <Header style={{ backgroundColor: 'green' }}>
           <Head />
         </Header>
         <Card >
@@ -72,11 +72,7 @@ export default function Acc(props) {
               <Thumbnail source={{ uri: CUser.photoURL }} />
               <Body>
                 <Text>{CUser.NAME}</Text>
-                <Text note>
-                  {
-                    CUser.Donar == true ? <Text note style={{color:'pink',fontWeight:'bold'}}>I AM A DONAR</Text> : <Text note>I AM NOT DONAR</Text>
-                  }
-                </Text>
+                <Text note>I AM {CUser.UserType} </Text>
               </Body>
 
             </Left>
@@ -86,7 +82,7 @@ export default function Acc(props) {
               <Button transparent>
                 <Icon active name="thumbs-up" />
                 {
-                  CUser.Blood_Group == null ? <Text note>Blood Group</Text> : <Text >Blood G {CUser.Blood_Group}</Text>
+                  CUser.Class == null ? <Text note>Class Room</Text> : <Text >Class  {CUser.Class}</Text>
                 }
               </Button>
             </Left>
@@ -108,62 +104,42 @@ export default function Acc(props) {
             <Content style={{ marginTop: 20 }} >
               <ListItem icon>
                 <Left>
-                  <Button style={{ backgroundColor: "#FF9501" }}>
-                    <Icon active name="wifi" />
+                  <Button style={{ backgroundColor: "green" }}>
+                    <Icon active name="person-add-sharp" />
                   </Button>
                 </Left>
                 <Body>
-                  {CUser.Donar == true ?<Text  >Profile Status As Donar </Text>: <Text>Profile Status As Searcher</Text>}
+                 <Text>{CUser.UserType}</Text>
                 </Body>
 
               </ListItem>
-              
-              <ListItem icon style={{marginTop:20}}>
+
+              <ListItem icon style={{ marginTop: 20 }}>
                 <Left>
-                  <Button style={{ backgroundColor: "#007AFF" }}>
-                    <Icon active name="wifi" />
+                  <Button style={{ backgroundColor: "green" }}>
+                    <Icon active name="ios-mail-open-sharp" />
                   </Button>
                 </Left>
                 <Body>
                   <Text>{CUser.Email}</Text>
                 </Body>
               </ListItem>
-              <ListItem icon style={{marginTop:20}}>
+             
+              <ListItem icon style={{ marginTop: 20 }}>
                 <Left>
-                  <Button style={{ backgroundColor: "#007AFF" }}>
-                    <Icon active name="bluetooth" />
+                  <Button style={{ backgroundColor: "green" }}>
+                    <Icon active name="lock-closed-sharp" />
                   </Button>
                 </Left>
                 <Body>
-                  <Text>Blood Group {CUser.Blood_Group}</Text>
-                </Body>
-              </ListItem>
-              <ListItem icon style={{marginTop:20}}>
-                <Left>
-                  <Button style={{ backgroundColor: "#007AFF" }}>
-                    <Icon active name="wifi" />
-                  </Button>
-                </Left>
-                <Body>
-                  {Pass == true ? <Text>{CUser.Pass}</Text> : <Text>************ Password</Text>}
+                 <Text>{CUser.Pass}</Text>
 
                 </Body>
-                <Right>
-                  {Pass == true ?
-                    <Button success onPress={() => ShowPass(false)} style={{backgroundColor:'pink',marginTop:-20}}>
-                      <Text>Hide</Text>
-                    </Button>
-                    :
-                    <Button success onPress={() => ShowPass(true)} style={{backgroundColor:'pink',marginTop:-20}}>
-                      <Text>Show</Text>
-                    </Button>
-                  }
-                </Right>
               </ListItem>
-            <View style={{flex:1,justifyContent:'center', alignItems:'center',marginTop:90}}>
-            <Animatable.Text animation="pulse" easing="ease-out"  iterationCount="infinite" style={{fontSize:15,marginTop:15,color:'pink',fontWeight:'bold'}}>Give The Gift Of THe Life</Animatable.Text>
-            <Animatable.Text animation="pulse" easing="ease-out"  iterationCount="infinite" style={{fontSize:15,marginTop:15,color:'pink',fontWeight:'bold'}}>Donate Blood</Animatable.Text>
-             </View>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 90 }}>
+                <Text style={{ fontSize: 15, marginTop: 15, color: 'green', fontWeight: 'bold' }}>Sayllani</Text>
+                <Text style={{ fontSize: 15, marginTop: 15, color: 'green', fontWeight: 'bold' }}>Equal Oportunity For EveryOne</Text>
+              </View>
             </Content>
           }
 
@@ -174,13 +150,53 @@ export default function Acc(props) {
         </ScrollView>
         {CUser.Mobile !== "" ?
           <Footer >
-            <FooterTab style={{backgroundColor:'pink'}}>
+            <FooterTab style={{ backgroundColor: 'green' }}>
               <Button vertical onPress={() => props.navigation.navigate("Account")} >
-                <Text style={{color:'white',fontWeight:'bold'}}  active>Account</Text>
+                <Text style={{ color: 'white', fontWeight: 'bold' }} active>Account</Text>
               </Button>
+              {CUser.UserType == "STUDENT" ?
+              <Button vertical onPress={() => props.navigation.navigate("Save")}>
+                <Text style={{ color: 'white', fontWeight: 'bold' }} >Company</Text>
+              </Button>
+              :null
+
+              }
+               {CUser.UserType == "Manager" || CUser.UserType == "Admin" ?
+               
               <Button vertical onPress={() => props.navigation.navigate("Donars")}>
-                <Text style={{color:'white',fontWeight:'bold'}} >Donars</Text>
-              </Button>
+                <Text style={{ color: 'white', fontWeight: 'bold' }} >Students</Text>
+              </Button> 
+             
+              :null
+
+              }
+                   {CUser.UserType == "Manager"  || CUser.UserType == "Admin" ?
+               
+               <Button vertical onPress={() => props.navigation.navigate("PostAdd")}>
+                 <Text style={{ color: 'white', fontWeight: 'bold' }} >Post Add</Text>
+               </Button> 
+              
+               :null
+ 
+               }
+                {CUser.UserType == "Admin" ?
+               
+               <Button vertical onPress={() => props.navigation.navigate("Manager")}>
+                 <Text style={{ color: 'white', fontWeight: 'bold' }} >Company</Text>
+               </Button> 
+              
+               :null
+ 
+               }
+                {CUser.UserType == "Admin" ?
+               
+               <Button vertical onPress={() => props.navigation.navigate("Add_User")}>
+                 <Text style={{ color: 'white', fontWeight: 'bold' }} >Add</Text>
+               </Button> 
+              
+               :null
+ 
+               }
               {/* <Button vertical onPress={() => props.navigation.navigate("Save")}>
                 <Text style={{color:'white',fontWeight:'bold'}} >Save</Text>
               </Button> */}
