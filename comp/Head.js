@@ -20,7 +20,7 @@ export default function Head(props) {
       </Body>
       <Right>
             <Button  onPress={()=>{OUT()}} transparent>
-              <Icon name='logout'  size={25} />
+              <Icon name='logout'  size={25} style={{color:"white"}} />
             </Button>
       </Right>
     </>

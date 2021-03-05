@@ -33,7 +33,8 @@ export default function Donars(props) {
               Class: child.val().Class,
               PHONE: child.val().Mobile,
               IMAGE: child.val().photoURL,
-              EMAIL : child.val().Email
+              EMAIL : child.val().Email,
+              USER_TYPE : child.val().UserType
             })
           })
           GU({ list: li })
@@ -96,7 +97,7 @@ Linking.canOpenURL(url).then(supported => {
 
               return (
                 <View>
-                  {item.key === UserId  ? null :
+                  {item.key === UserId || item.USER_TYPE === "MANAGER"  || item.USER_TYPE === "ADMIN"  ? null :
                 <Card style={{ flex: 0 }}>
                   <CardItem>
                     <Left>

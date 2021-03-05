@@ -161,7 +161,7 @@ export default function Acc(props) {
               :null
 
               }
-               {CUser.UserType == "Manager" || CUser.UserType == "Admin" ?
+               {CUser.UserType == "Manager" || CUser.UserType == "ADMIN" ?
                
               <Button vertical onPress={() => props.navigation.navigate("Donars")}>
                 <Text style={{ color: 'white', fontWeight: 'bold' }} >Students</Text>
@@ -170,7 +170,7 @@ export default function Acc(props) {
               :null
 
               }
-                   {CUser.UserType == "Manager"  || CUser.UserType == "Admin" ?
+                   {CUser.UserType == "Manager"  || CUser.UserType == "ADMIN" ?
                
                <Button vertical onPress={() => props.navigation.navigate("PostAdd")}>
                  <Text style={{ color: 'white', fontWeight: 'bold' }} >Post Add</Text>
@@ -179,7 +179,7 @@ export default function Acc(props) {
                :null
  
                }
-                {CUser.UserType == "Admin" ?
+                {CUser.UserType == "ADMIN" ?
                
                <Button vertical onPress={() => props.navigation.navigate("Manager")}>
                  <Text style={{ color: 'white', fontWeight: 'bold' }} >Company</Text>
@@ -188,7 +188,7 @@ export default function Acc(props) {
                :null
  
                }
-                {CUser.UserType == "Admin" ?
+                {CUser.UserType == "ADMIN" ?
                
                <Button vertical onPress={() => props.navigation.navigate("Add_User")}>
                  <Text style={{ color: 'white', fontWeight: 'bold' }} >Add</Text>
